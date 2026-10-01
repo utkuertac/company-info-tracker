@@ -1,0 +1,25 @@
+# .NET build çıktıları
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+*.rsuser
+.vs/
+
+# Yerel ortam / gizli bilgiler
+.env
+appsettings.*.local.json
+*.db
+*.db-shm
+*.db-wal
+
+# Editörler
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# macOS
+.DS_Store
+._*
