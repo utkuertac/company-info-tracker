@@ -1,0 +1,91 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Company Info Tracker</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        html, body {
+            height: 100%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            flex: 1;
+            margin-top: 70px;
+        }
+        footer.footer {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            font-size: 0.875rem;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top border-bottom box-shadow">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">Company Info Tracker</a>
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Menüyü aç/kapat">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between" id="mainNavbar">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link fw-bold text-white" asp-controller="Companies" asp-action="Index">Firmalar</a>
+                            </li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link fw-bold text-white" asp-controller="Admin" asp-action="Dashboard">Firma Yönetimi</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-bold text-white" asp-controller="Admin" asp-action="UserManagement">Kullanıcı Yönetimi</a>
+                                </li>
+                            }
+                        </ul>
+
+                        <div class="d-flex align-items-center text-white gap-2">
+                            <a asp-controller="Account" asp-action="Profile" class="btn btn-outline-light btn-sm">👤 Profilim</a>
+                            <button type="button" class="btn btn-outline-light btn-sm" id="toggle-password-blur">
+                                🔓 Şifreleri Göster
+                            </button>
+                            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-outline-light btn-sm">🚪 Çıkış Yap</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer text-center mt-auto">
+        <div class="container">
+            &copy; @DateTime.Now.Year - Company Info Tracker
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
