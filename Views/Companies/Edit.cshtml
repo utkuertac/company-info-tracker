@@ -1,0 +1,110 @@
+@model CompanyInfoTracker.Models.Company
+
+@{
+    ViewData["Title"] = "Firma Düzenle";
+}
+
+<h2 class="mb-4">Firma Düzenle</h2>
+
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    <input type="hidden" asp-for="Id" />
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label asp-for="Name" class="form-label fw-bold">Firma Adı</label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            <label asp-for="VPN" class="form-label fw-bold">VPN</label>
+            <input asp-for="VPN" class="form-control" />
+        </div>
+    </div>
+
+    <fieldset class="border rounded p-3 mb-4">
+        <legend class="float-none w-auto px-2">Uygulama Bilgileri</legend>
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="form-label">Sürüm</label>
+                <input asp-for="Application.Version" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">URL</label>
+                <input asp-for="Application.URL" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Firma No</label>
+                <input asp-for="Application.CompanyNumber" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Kullanıcı Adı</label>
+                <input asp-for="Application.Username" class="form-control" />
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-md-3">
+                <label class="form-label">Şifre</label>
+                <input asp-for="Application.Password" class="form-control" type="password" value="@Model.Application?.Password" autocomplete="new-password" />
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="border rounded p-3 mb-4">
+        <legend class="float-none w-auto px-2">Uzak Dış IP</legend>
+        <div class="row mb-2">
+            <div class="col-md-4">
+                <label class="form-label">IP</label>
+                <input asp-for="RemoteExternalIP.IP" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Kullanıcı Adı</label>
+                <input asp-for="RemoteExternalIP.Username" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Şifre</label>
+                <input asp-for="RemoteExternalIP.Password" class="form-control" type="password" value="@Model.RemoteExternalIP?.Password" autocomplete="new-password" />
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="border rounded p-3 mb-4">
+        <legend class="float-none w-auto px-2">Uzak İç IP</legend>
+        <div class="row mb-2">
+            <div class="col-md-4">
+                <label class="form-label">IP</label>
+                <input asp-for="RemoteInternalIP.IP" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Kullanıcı Adı</label>
+                <input asp-for="RemoteInternalIP.Username" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Şifre</label>
+                <input asp-for="RemoteInternalIP.Password" class="form-control" type="password" value="@Model.RemoteInternalIP?.Password" autocomplete="new-password" />
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="border rounded p-3 mb-4">
+        <legend class="float-none w-auto px-2">Veri Tabanı</legend>
+        <div class="row mb-2">
+            <div class="col-md-4">
+                <label class="form-label">Sunucu Adı</label>
+                <input asp-for="Database.ServerName" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Kullanıcı Adı</label>
+                <input asp-for="Database.Username" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Şifre</label>
+                <input asp-for="Database.Password" class="form-control" type="password" value="@Model.Database?.Password" autocomplete="new-password" />
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="d-flex justify-content-between">
+        <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        <button type="submit" class="btn btn-success">Kaydet</button>
+    </div>
+</form>

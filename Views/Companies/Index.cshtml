@@ -1,0 +1,135 @@
+@model List<CompanyInfoTracker.Models.Company>
+@{
+    ViewData["Title"] = "Firma Listesi";
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    var isAdmin = User.IsInRole("Admin");
+
+    // Hücre içeriği Razor tarafından HTML-encode edilir (XSS koruması).
+    // Çift tıklamada data-copy değeri panoya kopyalanır.
+    void Cell(string? value, bool secret = false, bool link = false)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            <td><span class="veri-yok">-</span></td>
+            return;
+        }
+
+        <td class="copyable" data-copy="@value" title="Kopyalamak için çift tıklayın">
+            @if (secret)
+            {
+                <span class="secret">@value</span>
+            }
+            else if (link && Uri.TryCreate(value, UriKind.Absolute, out var uri)
+                     && (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+            {
+                <a href="@uri" target="_blank" rel="noopener noreferrer">@value</a>
+            }
+            else
+            {
+                @value
+            }
+        </td>
+    }
+}
+
+<h1 class="mb-4">Firma Listesi</h1>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success text-center">@TempData["Message"]</div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a asp-action="Create" class="btn btn-add">
+        ➕ YENİ FİRMA EKLE
+    </a>
+    <div class="btn-group" role="group">
+        <a class="btn btn-outline-secondary @(currentPage <= 1 ? "disabled" : "")"
+           asp-action="Index" asp-route-page="@(currentPage - 1)" title="Önceki sayfa">
+            ◀
+        </a>
+        <span class="btn btn-outline-dark disabled">Sayfa @currentPage / @totalPages</span>
+        <a class="btn btn-outline-secondary @(currentPage >= totalPages ? "disabled" : "")"
+           asp-action="Index" asp-route-page="@(currentPage + 1)" title="Sonraki sayfa">
+            ▶
+        </a>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center">
+        Görüntülenecek firma bulunmamaktadır.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table custom-table table-hover text-center">
+            <thead class="table-primary text-uppercase fw-bold">
+                <tr>
+                    <th rowspan="2">FİRMA ADI</th>
+                    <th rowspan="2">VPN</th>
+                    <th colspan="4">UYGULAMA</th>
+                    <th colspan="3">UZAK DIŞ IP</th>
+                    <th colspan="3">UZAK İÇ IP</th>
+                    <th colspan="3">VERİ TABANI</th>
+                    @if (isAdmin)
+                    {
+                        <th rowspan="2">DÜZENLE</th>
+                        <th rowspan="2">SİL</th>
+                    }
+                </tr>
+                <tr>
+                    <th>SÜRÜM</th>
+                    <th>URL</th>
+                    <th>FİRMA NO</th>
+                    <th>KULLANICI</th>
+                    <th>IP</th>
+                    <th>KULLANICI</th>
+                    <th>ŞİFRE</th>
+                    <th>IP</th>
+                    <th>KULLANICI</th>
+                    <th>ŞİFRE</th>
+                    <th>SUNUCU</th>
+                    <th>KULLANICI</th>
+                    <th>ŞİFRE</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @{ Cell(item.Name); }
+                        @{ Cell(item.VPN, link: true); }
+                        @{ Cell(item.Application?.Version); }
+                        @{ Cell(item.Application?.URL, link: true); }
+                        @{ Cell(item.Application?.CompanyNumber); }
+                        @{ Cell(item.Application?.Username); }
+                        @{ Cell(item.RemoteExternalIP?.IP); }
+                        @{ Cell(item.RemoteExternalIP?.Username); }
+                        @{ Cell(item.RemoteExternalIP?.Password, secret: true); }
+                        @{ Cell(item.RemoteInternalIP?.IP); }
+                        @{ Cell(item.RemoteInternalIP?.Username); }
+                        @{ Cell(item.RemoteInternalIP?.Password, secret: true); }
+                        @{ Cell(item.Database?.ServerName); }
+                        @{ Cell(item.Database?.Username); }
+                        @{ Cell(item.Database?.Password, secret: true); }
+                        @if (isAdmin)
+                        {
+                            <td>
+                                <a class="btn btn-sm btn-warning btn-icon" asp-action="Edit" asp-route-id="@item.Id">✏️ DÜZENLE</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-sm btn-danger btn-icon" asp-action="Delete" asp-route-id="@item.Id">🗑️ SİL</a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<div id="copy-toast" class="copy-toast">📋 Kopyalandı</div>

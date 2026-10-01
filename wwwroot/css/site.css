@@ -1,0 +1,88 @@
+html {
+  font-size: 14px;
+  position: relative;
+  min-height: 100%;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+/* Tablolar */
+table.custom-table {
+  border: 4px solid black;
+  border-collapse: collapse;
+}
+
+table.custom-table thead th {
+  border: 4px solid black;
+  text-transform: uppercase;
+  font-weight: bold;
+  text-align: center;
+}
+
+table.custom-table td {
+  border: 1px solid black;
+  vertical-align: middle;
+  height: 60px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+td.copyable {
+  cursor: copy;
+}
+
+.veri-yok {
+  opacity: 0.6;
+  font-style: italic;
+  color: #444;
+}
+
+/* Butonlar */
+.btn-add {
+  background-color: #198754;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.btn-icon {
+  text-transform: uppercase;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* Kopyalandı bildirimi */
+.copy-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #198754;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: none;
+  z-index: 9999;
+}
+
+/* 🔒 Şifre bulanıklaştırma efekti (navbar'daki buton body'ye .secrets-visible ekler) */
+.secret {
+  display: inline-block;
+  filter: blur(6px);
+  user-select: none;
+  transition: filter 0.3s ease;
+}
+
+body.secrets-visible .secret {
+  filter: none;
+  user-select: text;
+}

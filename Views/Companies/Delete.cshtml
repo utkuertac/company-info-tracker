@@ -1,0 +1,55 @@
+@model CompanyInfoTracker.Models.Company
+
+@{
+    ViewData["Title"] = "Firmayı Sil";
+
+    void Value(string? value, string placeholder = "-")
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            <em class="text-muted">@placeholder</em>
+        }
+        else
+        {
+            @value
+        }
+    }
+}
+
+<h2 class="text-danger mb-4">Firmayı Sil</h2>
+
+<div class="alert alert-warning">
+    <strong>Dikkat!</strong> Bu firmayı silmek üzeresiniz. Bu işlem geri alınamaz.
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title fw-bold">Firma Adı</h5>
+        <p class="card-text">@{ Value(Model.Name, "Belirtilmemiş"); }</p>
+
+        <h5 class="card-title fw-bold">VPN</h5>
+        <p class="card-text">@{ Value(Model.VPN, "Belirtilmemiş"); }</p>
+
+        <h5 class="card-title fw-bold">Uygulama Bilgisi</h5>
+        <ul>
+            <li>Sürüm: @{ Value(Model.Application?.Version); }</li>
+            <li>URL: @{ Value(Model.Application?.URL); }</li>
+            <li>Firma No: @{ Value(Model.Application?.CompanyNumber); }</li>
+            <li>Kullanıcı Adı: @{ Value(Model.Application?.Username); }</li>
+        </ul>
+
+        <h5 class="card-title fw-bold">Veri Tabanı</h5>
+        <ul>
+            <li>Sunucu: @{ Value(Model.Database?.ServerName); }</li>
+            <li>Kullanıcı Adı: @{ Value(Model.Database?.Username); }</li>
+        </ul>
+    </div>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="d-flex justify-content-between">
+        <a asp-action="Index" class="btn btn-secondary">İptal</a>
+        <button type="submit" class="btn btn-danger">🗑️ Sil</button>
+    </div>
+</form>

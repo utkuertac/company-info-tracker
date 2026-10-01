@@ -1,0 +1,103 @@
+@model CompanyInfoTracker.Models.Company
+
+@{
+    ViewData["Title"] = "Yeni Firma Ekle";
+}
+
+<h2 class="mb-4 text-center">Yeni Firma Ekle</h2>
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <form asp-action="Create" method="post">
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label fw-bold">Firma Adı</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="VPN" class="form-label fw-bold">VPN</label>
+                <input asp-for="VPN" class="form-control" />
+                <span asp-validation-for="VPN" class="text-danger"></span>
+            </div>
+
+            <hr class="my-4" />
+
+            <h4 class="text-primary">Uygulama Bilgileri</h4>
+            <div class="mb-3">
+                <label asp-for="Application.Version" class="form-label">Sürüm</label>
+                <input asp-for="Application.Version" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Application.URL" class="form-label">URL</label>
+                <input asp-for="Application.URL" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Application.CompanyNumber" class="form-label">Firma No</label>
+                <input asp-for="Application.CompanyNumber" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Application.Username" class="form-label">Kullanıcı</label>
+                <input asp-for="Application.Username" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Application.Password" class="form-label">Şifre</label>
+                <input asp-for="Application.Password" class="form-control" autocomplete="new-password" />
+            </div>
+
+            <hr class="my-4" />
+            <h4 class="text-primary">Uzak Dış IP</h4>
+            <div class="mb-3">
+                <label asp-for="RemoteExternalIP.IP" class="form-label">IP</label>
+                <input asp-for="RemoteExternalIP.IP" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="RemoteExternalIP.Username" class="form-label">Kullanıcı</label>
+                <input asp-for="RemoteExternalIP.Username" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="RemoteExternalIP.Password" class="form-label">Şifre</label>
+                <input asp-for="RemoteExternalIP.Password" class="form-control" autocomplete="new-password" />
+            </div>
+
+            <hr class="my-4" />
+            <h4 class="text-primary">Uzak İç IP</h4>
+            <div class="mb-3">
+                <label asp-for="RemoteInternalIP.IP" class="form-label">IP</label>
+                <input asp-for="RemoteInternalIP.IP" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="RemoteInternalIP.Username" class="form-label">Kullanıcı</label>
+                <input asp-for="RemoteInternalIP.Username" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="RemoteInternalIP.Password" class="form-label">Şifre</label>
+                <input asp-for="RemoteInternalIP.Password" class="form-control" autocomplete="new-password" />
+            </div>
+
+            <hr class="my-4" />
+            <h4 class="text-primary">Veritabanı Bilgileri</h4>
+            <div class="mb-3">
+                <label asp-for="Database.ServerName" class="form-label">Sunucu</label>
+                <input asp-for="Database.ServerName" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Database.Username" class="form-label">Kullanıcı</label>
+                <input asp-for="Database.Username" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Database.Password" class="form-label">Şifre</label>
+                <input asp-for="Database.Password" class="form-control" autocomplete="new-password" />
+            </div>
+
+            <div class="mt-4 text-center">
+                <button type="submit" class="btn btn-success fw-bold">✔️ Firma Ekle</button>
+                <a asp-action="Index" class="btn btn-secondary ms-2">İptal</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
