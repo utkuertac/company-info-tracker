@@ -1,0 +1,121 @@
+@model List<CompanyInfoTracker.ViewModels.CompanyAssignmentViewModel>
+
+@{
+    ViewData["Title"] = "Firma Yönetimi";
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    var allUsers = ViewBag.AllUsers as List<ApplicationUser> ?? new List<ApplicationUser>();
+}
+
+
+<h2 class="mb-4 text-center">Firma Yönetimi</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success text-center">@TempData["Message"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger text-center">@TempData["Error"]</div>
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <a asp-controller="Companies" asp-action="Create" class="btn btn-add">
+        ➕ Yeni Firma Ekle
+    </a>
+
+    <div class="btn-group" role="group">
+        <a class="btn btn-outline-secondary @(currentPage <= 1 ? "disabled" : "")"
+           asp-action="Dashboard" asp-route-page="@(currentPage - 1)" title="Önceki sayfa">◀</a>
+        <span class="btn btn-outline-dark disabled">Sayfa @currentPage / @totalPages</span>
+        <a class="btn btn-outline-secondary @(currentPage >= totalPages ? "disabled" : "")"
+           asp-action="Dashboard" asp-route-page="@(currentPage + 1)" title="Sonraki sayfa">▶</a>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table custom-table table-hover text-center">
+            <thead class="table-primary">
+                <tr>
+                    <th>Firma Adı</th>
+                    <th>Firma İşlemleri</th>
+                    <th>Atanmış Kullanıcılar</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (string.IsNullOrWhiteSpace(item.Company.Name))
+                        {
+                            <span class="veri-yok">-</span>
+                        }
+                        else
+                        {
+                            @item.Company.Name
+                        }
+                    </td>
+                    <td>
+                        <a class="btn btn-warning btn-sm btn-icon" asp-controller="Companies" asp-action="Edit" asp-route-id="@item.Company.Id" title="Firma düzenle">✏️ DÜZENLE</a>
+                        <a class="btn btn-danger btn-sm btn-icon" asp-controller="Companies" asp-action="Delete" asp-route-id="@item.Company.Id" title="Firma sil">🗑️ SİL</a>
+                    </td>
+                    <td>
+                        @if (item.AssignedUsers != null && item.AssignedUsers.Any())
+                        {
+                            <ul class="list-unstyled mb-0">
+                                @foreach (var u in item.AssignedUsers)
+                                {
+                                    <li class="d-flex justify-content-between align-items-center">
+                                        <span class="text-primary fw-bold">@u.UserName</span>
+                                        <form asp-action="RemoveUser" method="post" class="ms-2">
+                                            <input type="hidden" name="companyId" value="@item.Company.Id" />
+                                            <input type="hidden" name="userId" value="@u.Id" />
+                                            <input type="hidden" name="page" value="@currentPage" />
+                                            <button type="submit" class="btn btn-sm btn-danger btn-icon" title="Kullanıcı kaldır">❌ KALDIR</button>
+                                        </form>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span class="veri-yok">-</span>
+                        }
+                    </td>
+                    <td>
+                        @if (allUsers.Any())
+                        {
+                            <form asp-action="AssignUser" method="post" class="d-flex justify-content-center gap-2">
+                                <input type="hidden" name="companyId" value="@item.Company.Id" />
+                                <input type="hidden" name="page" value="@currentPage" />
+                                <select name="userId" class="form-select form-select-sm" required>
+                                    <option value="">Kullanıcı seç</option>
+                                    @foreach (var user in allUsers)
+                                    {
+                                        <option value="@user.Id">@user.UserName</option>
+                                    }
+                                </select>
+                                <button type="submit" class="btn btn-success btn-sm btn-icon" title="Kullanıcı ata">➕ ATA</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="veri-yok">Atanabilecek kullanıcı yok</span>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-warning text-center">
+        Şu anda kayıtlı bir firma bulunmamaktadır.
+    </div>
+}
