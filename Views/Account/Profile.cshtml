@@ -1,0 +1,38 @@
+@model CompanyInfoTracker.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Profilim";
+}
+
+<h2 class="mb-4 text-center">Kullanıcı Bilgileri</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success text-center">@TempData["Message"]</div>
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Kullanıcı Adı</dt>
+                    <dd class="col-sm-8">@Model.UserName</dd>
+
+                    <dt class="col-sm-4">E-posta</dt>
+                    <dd class="col-sm-8">@Model.Email</dd>
+
+                    <dt class="col-sm-4">Ad</dt>
+                    <dd class="col-sm-8">@Model.FirstName</dd>
+
+                    <dt class="col-sm-4">Soyad</dt>
+                    <dd class="col-sm-8">@Model.LastName</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="mt-4 text-center">
+            <a asp-action="ChangePassword" class="btn btn-primary">🔐 Şifremi Değiştir</a>
+        </div>
+    </div>
+</div>
